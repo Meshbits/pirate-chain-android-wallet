@@ -12,7 +12,7 @@ group = 'cash.z.ecc.android'
 version = Deps.versionName
 
 android {
-    ndkVersion "21.1.6352462"
+    ndkVersion "22.1.7171670"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
     viewBinding.enabled = true
@@ -37,13 +37,13 @@ android {
         zcashtestnet {
             dimension 'network'
             applicationId 'cash.z.ecc.android.testnet'
-            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightwalletd.testnet.electriccoin.co"'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.pirate.black"'
             matchingFallbacks = ['zcashtestnet', 'debug']
         }
 
         zcashmainnet {
             dimension 'network'
-            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightwalletd.electriccoin.co"'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.pirate.black"'
             matchingFallbacks = ['zcashmainnet', 'release']
         }
     }
@@ -120,10 +120,11 @@ dependencies {
     implementation project(':feedback')
     implementation project(':mnemonic')
     implementation project(':lockbox')
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation(name:"zcash-android-sdk-release", ext:"aar")
     // Zcash
     implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
-    implementation Deps.Zcash.SDK
+//    implementation Deps.Zcash.SDK
 
     //  Kotlin
     implementation Deps.Kotlin.STDLIB
