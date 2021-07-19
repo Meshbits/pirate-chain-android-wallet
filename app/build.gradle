@@ -37,13 +37,13 @@ android {
         zcashtestnet {
             dimension 'network'
             applicationId 'cash.z.ecc.android.testnet'
-            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.pirate.black"'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.meshbits.io"'
             matchingFallbacks = ['zcashtestnet', 'debug']
         }
 
         zcashmainnet {
             dimension 'network'
-            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.pirate.black"'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.meshbits.io"'
             matchingFallbacks = ['zcashmainnet', 'release']
         }
     }

@@ -47,7 +47,7 @@ object Const {
         object Server {
             // If you've forked the ECC repo, change this to your hosted lightwalletd instance
             const val HOST = BuildConfig.DEFAULT_SERVER_URL
-            const val PORT = 443
+            const val PORT = 9067
         }
     }
 }
