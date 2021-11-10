@@ -2,12 +2,6 @@ import cash.z.ecc.android.Deps
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-repositories {
-    google()
-    jcenter()
-}
 
 android {
     compileSdkVersion Deps.compileSdkVersion

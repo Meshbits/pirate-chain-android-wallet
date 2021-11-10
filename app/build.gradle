@@ -2,7 +2,6 @@ import cash.z.ecc.android.Deps
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.github.ben-manes.versions'
@@ -15,21 +14,25 @@ android {
     ndkVersion "22.1.7171670"
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
-    viewBinding.enabled = true
     defaultConfig {
         applicationId Deps.packageName
         minSdkVersion Deps.minSdkVersion
         targetSdkVersion Deps.targetSdkVersion
         versionCode = Deps.versionCode
         versionName = Deps.versionName
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        if (Boolean.parseBoolean(isUseTestOrchestrator)) {
+            testInstrumentationRunnerArguments clearPackageData: 'true'
+        }
         multiDexEnabled true
         resValue 'string', 'bugsnag_api_key', "${(project.findProperty('BUGSNAG_API_KEY') ?: System.getenv('BUGSNAG_API_KEY')) ?: ''}"
 
         // this setting allows using color resources in vector drawables, rather than hardcoded values (note: only works when minApi is 21)
         // per https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.VectorDrawablesOptions.html: If set to an empty collection, all special handling of vector drawables will be disabled.
         vectorDrawables.generatedDensities = []
+    }
+    buildFeatures {
+        viewBinding true
     }
     flavorDimensions 'network'
     productFlavors {
@@ -78,7 +81,7 @@ android {
         }
     }
     compileOptions {
-        // emable support for new langauge APIs but also fix the issue with zxing on API < 24
+        // enable support for new language APIs but also fix the issue with zxing on API < 24
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -91,7 +94,9 @@ android {
 //        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
     }
     testOptions {
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        if (Boolean.parseBoolean(isUseTestOrchestrator)) {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        }
     }
     kapt {
         arguments {
@@ -183,8 +188,15 @@ dependencies {
     testImplementation Deps.Test.MOKITO
     testImplementation Deps.Test.MOKITO_KOTLIN
 
+    androidTestImplementation Deps.Kotlin.REFLECT
     androidTestImplementation Deps.Test.Android.JUNIT
-
+    androidTestImplementation Deps.Test.Android.CORE
+    androidTestImplementation Deps.Test.Android.FRAGMENT
+    androidTestImplementation Deps.Test.Android.ESPRESSO
+    androidTestImplementation Deps.Test.Android.ESPRESSO_INTENTS
+    androidTestImplementation Deps.Test.Android.NAVIGATION
+    // androidTestImplementation is preferred, but then the androidx.fragment.app.testing.FragmentScenario$EmptyFragmentActivity isn't available
+    debugImplementation Deps.Test.Android.FRAGMENT
 }
 
 defaultTasks 'clean', 'assembleZcashmainnetRelease'

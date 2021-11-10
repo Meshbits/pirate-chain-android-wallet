@@ -20,6 +20,7 @@ import cash.z.ecc.android.ext.disabledIf
 import cash.z.ecc.android.ext.goneIf
 import cash.z.ecc.android.ext.invisibleIf
 import cash.z.ecc.android.ext.onClickNavTo
+import cash.z.ecc.android.ext.requireApplicationContext
 import cash.z.ecc.android.ext.showSharedLibraryCriticalError
 import cash.z.ecc.android.ext.toAppColor
 import cash.z.ecc.android.ext.toColoredSpan
@@ -32,6 +33,8 @@ import cash.z.ecc.android.feedback.Report.Tap.HOME_HISTORY
 import cash.z.ecc.android.feedback.Report.Tap.HOME_PROFILE
 import cash.z.ecc.android.feedback.Report.Tap.HOME_RECEIVE
 import cash.z.ecc.android.feedback.Report.Tap.HOME_SEND
+import cash.z.ecc.android.preference.Preferences
+import cash.z.ecc.android.preference.model.get
 import cash.z.ecc.android.sdk.Synchronizer.Status.DISCONNECTED
 import cash.z.ecc.android.sdk.Synchronizer.Status.STOPPED
 import cash.z.ecc.android.sdk.Synchronizer.Status.SYNCED
@@ -44,6 +47,7 @@ import cash.z.ecc.android.ui.base.BaseFragment
 import cash.z.ecc.android.ui.home.HomeFragment.BannerAction.CANCEL
 import cash.z.ecc.android.ui.home.HomeFragment.BannerAction.CLEAR
 import cash.z.ecc.android.ui.home.HomeFragment.BannerAction.FUND_NOW
+import cash.z.ecc.android.ui.send.AutoShieldFragment
 import cash.z.ecc.android.ui.send.SendViewModel
 import cash.z.ecc.android.ui.setup.WalletSetupViewModel
 import cash.z.ecc.android.ui.setup.WalletSetupViewModel.WalletSetupState.NO_SEED
@@ -178,7 +182,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun onSyncReady() {
         twig("Sync ready! Monitoring synchronizer state...")
         monitorUiModelChanges()
-        maybeInterruptUser()
+
+        if (Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireApplicationContext())) {
+            maybeInterruptUser()
+        }
 
         twig("HomeFragment.onSyncReady COMPLETE")
     }
@@ -367,18 +374,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun autoShield(uiModel: HomeViewModel.UiModel) {
-        if (uiModel.hasAutoshieldFunds && canAutoshield()) {
-            twig("Autoshielding is available! Let's do this!!!")
-            mainActivity?.lastAutoShieldTime = System.currentTimeMillis()
-            mainActivity?.safeNavigate(R.id.action_nav_home_to_nav_funds_available)
+        // TODO: Move the preference read to a suspending function
+        // First time SharedPreferences are hit, it'll perform disk IO
+        val isAutoshieldingAcknowledged = Preferences.isAcknowledgedAutoshieldingInformationPrompt.get(requireApplicationContext())
+        val canAutoshield = AutoShieldFragment.canAutoshield(requireApplicationContext())
+
+        if (uiModel.hasAutoshieldFunds && canAutoshield) {
+            if (!isAutoshieldingAcknowledged) {
+                mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToAutoshieldingInfo(true))
+            } else {
+                twig("Autoshielding is available! Let's do this!!!")
+                mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToNavFundsAvailable())
+            }
         } else {
+            if (!isAutoshieldingAcknowledged) {
+                mainActivity?.safeNavigate(HomeFragmentDirections.actionNavHomeToAutoshieldingInfo(false))
+            }
+
             // troubleshooting logs
             if (uiModel.transparentBalance.availableZatoshi > 0) {
                 twig("Transparent funds are available but not enough to autoshield. Available: ${uiModel.transparentBalance.availableZatoshi.convertZatoshiToZecString(10)}  Required: ${ZcashWalletApp.instance.autoshieldThreshold.convertZatoshiToZecString(8)}")
             } else if (uiModel.transparentBalance.totalZatoshi > 0) {
                 twig("Transparent funds have been received but they require 10 confirmations for autoshielding.")
-            } else if (!canAutoshield()) {
-                twig("Could not autoshield probably because the last one occurred ${System.currentTimeMillis() - (mainActivity?.lastAutoShieldTime ?: 0)}ms ago which is less than the required cool off time of ${mainActivity?.maxAutoshieldFrequency}ms")
+            } else if (!canAutoshield) {
+                twig("Could not autoshield probably because the last one occurred too recently")
             }
         }
     }
@@ -492,15 +511,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 it.show()
             }
         }
-    }
-
-    private fun canAutoshield(): Boolean {
-        return mainActivity?.let { main ->
-            System.currentTimeMillis().let { now ->
-                val delta = now - main.lastAutoShieldTime
-                return delta > main.maxAutoshieldFrequency
-            }
-        } ?: false
     }
 
     private fun feedbackPrompt(): Dialog {

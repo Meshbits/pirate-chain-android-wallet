@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
-import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +48,7 @@ import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import cash.z.ecc.android.R
@@ -87,7 +87,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.main_activity) {
 
     @Inject
     lateinit var mainViewModel: MainViewModel
@@ -128,10 +128,6 @@ class MainActivity : AppCompatActivity() {
         null
     }
 
-    // Autoshielding settings
-    val maxAutoshieldFrequency: Long = 30 * DateUtils.MINUTE_IN_MILLIS
-    var lastAutoShieldTime: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         component = ZcashWalletApp.component.mainActivitySubcomponent().create(this).also {
             it.inject(this)
@@ -141,7 +137,6 @@ class MainActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.main_activity)
         initNavigation()
         initLoadScreen()
 
@@ -221,11 +216,13 @@ class MainActivity : AppCompatActivity() {
         navController?.popBackStack(destination, inclusive)
     }
 
-    fun safeNavigate(@IdRes destination: Int, extras: Navigator.Extras? = null) {
+    fun safeNavigate(navDirections: NavDirections) = safeNavigate(navDirections.actionId, navDirections.arguments, null)
+
+    fun safeNavigate(@IdRes destination: Int, args: Bundle? = null, extras: Navigator.Extras? = null) {
         if (navController == null) {
             navInitListeners.add {
                 try {
-                    navController?.navigate(destination, null, null, extras)
+                    navController?.navigate(destination, args, null, extras)
                 } catch (t: Throwable) {
                     twig(
                         "WARNING: during callback, did not navigate to destination: R.id.${
@@ -238,7 +235,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             try {
-                navController?.navigate(destination, null, null, extras)
+                navController?.navigate(destination, args, null, extras)
             } catch (t: Throwable) {
                 twig(
                     "WARNING: did not immediately navigate to destination: R.id.${
@@ -459,12 +456,12 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, if (linger) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
     }
 
-    fun showSnackbar(message: String, action: String = getString(android.R.string.ok)): Snackbar {
+    fun showSnackbar(message: String, actionLabel: String = getString(android.R.string.ok), action: () -> Unit = {}): Snackbar {
         return if (snackbar == null) {
             val view = findViewById<View>(R.id.main_activity_container)
             val snacks = Snackbar
                 .make(view, "$message", Snackbar.LENGTH_INDEFINITE)
-                .setAction(action) { /*auto-close*/ }
+                .setAction(actionLabel) { action() }
 
             val snackBarView = snacks.view as ViewGroup
             val navigationBarHeight = resources.getDimensionPixelSize(
@@ -485,7 +482,7 @@ class MainActivity : AppCompatActivity() {
             snackBarView.getChildAt(0).setLayoutParams(params)
             snacks
         } else {
-            snackbar!!.setText(message).setAction(action) { /*auto-close*/ }
+            snackbar!!.setText(message).setAction(actionLabel) { action() }
         }.also {
             if (!it.isShownOrQueued) it.show()
         }
@@ -653,6 +650,7 @@ class MainActivity : AppCompatActivity() {
 
         dialogViewBinding.dialogMessage.setText(msgResId)
         if (dialog != null) dialog?.dismiss()
+        // TODO: This should be moved to a DialogFragment, otherwise unmanaged dialogs go away during Activity configuration changes
         dialog = MaterialAlertDialogBuilder(this)
             .setTitle(titleResId)
             .setView(dialogViewBinding.root)
