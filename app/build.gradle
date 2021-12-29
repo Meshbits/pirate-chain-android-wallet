@@ -40,13 +40,13 @@ android {
         zcashtestnet {
             dimension 'network'
             applicationId 'cash.z.ecc.android.testnet'
-            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.meshbits.io"'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.pirate.black"'
             matchingFallbacks = ['zcashtestnet', 'debug']
         }
 
         zcashmainnet {
             dimension 'network'
-            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.meshbits.io"'
+            buildConfigField "String", "DEFAULT_SERVER_URL", '"lightd.pirate.black"'
             matchingFallbacks = ['zcashmainnet', 'release']
         }
     }
@@ -130,8 +130,9 @@ dependencies {
     // Zcash
     implementation Deps.Zcash.ANDROID_WALLET_PLUGINS
 //    implementation Deps.Zcash.SDK
-
     //  Kotlin
+//    implementation Deps.Zcash.SDK_v2
+
     implementation Deps.Kotlin.STDLIB
 
     // Android
