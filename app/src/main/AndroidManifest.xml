@@ -14,12 +14,17 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/ZcashTheme">
-        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".ui.splash.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
+        </activity>
+
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

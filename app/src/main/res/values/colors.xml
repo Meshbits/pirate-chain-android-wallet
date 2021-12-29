@@ -88,4 +88,8 @@
     <!--transaction colors-->
     <color name="transaction_sent">#B8B8B8</color>
 
+    <!-- Pirate wallet colors -->
+    <color name="pirate_wallet_bg">#212426</color>
+
+
 </resources>
