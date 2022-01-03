@@ -33,15 +33,15 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
 
     fun openRespectiveScreen() {
 
-//        val prefs = SharedPreferenceFactory.getSharedPreferences(
-//            this
-//        )
-//
-//        if (prefs.getBoolean(Const.Pref.FIRST_USE_VIEW_TX, false)) {
-//            openLoginActivity()
-//        } else {
+        val prefs = SharedPreferenceFactory.getSharedPreferences(
+            this
+        )
+
+        if (prefs.getBoolean(Const.Pref.FIRST_USE_VIEW_TX, true)) {
+            openLoginActivity()
+        } else {
             openMainActivity()
-//        }
+        }
     }
 
     fun openLoginActivity() {
