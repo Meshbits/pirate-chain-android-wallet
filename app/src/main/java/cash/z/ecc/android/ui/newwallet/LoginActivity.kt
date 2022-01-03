@@ -1,35 +1,17 @@
-package cash.z.ecc.android.ui.splash
+package cash.z.ecc.android.ui.newwallet
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cash.z.ecc.android.R
-import cash.z.ecc.android.ui.newwallet.LoginActivity
 
-class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
+class LoginActivity : AppCompatActivity(R.layout.login_activity) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Handler(Looper.getMainLooper()).postDelayed(
-            object : Runnable {
-                override fun run() {
-                    openMainActivity()
-                }
-            },
-            1000
-        )
         addBottomAndTopNavBarColors()
-    }
-
-    fun openMainActivity() {
-        Intent(this, LoginActivity::class.java).apply {
-            startActivity(this)
-        }
     }
 
     private fun addBottomAndTopNavBarColors() {

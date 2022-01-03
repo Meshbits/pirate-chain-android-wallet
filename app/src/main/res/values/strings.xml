@@ -290,4 +290,13 @@
 
     <string name="transaction_history_format_date_time_brief" tools:ignore="MissingTranslation">MM/dd/yy h:mma</string>
 
+
+
+    <!--             -->
+    <!-- ARRR WALLET -->
+    <!--             -->
+    <string name="restore_from">@string/restore_from_str</string>
+    <string name="recovery_phrase">@string/recovery_phrase_str</string>
+    <string name="create_new_wallet">@string/create_new_wallet_str</string>
+
 </resources>

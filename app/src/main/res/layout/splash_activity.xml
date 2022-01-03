@@ -10,7 +10,7 @@
         android:layout_centerInParent="true"
         android:id="@+id/pirateWalletLogo"
         android:paddingLeft="25dp"
-        android:src="@drawable/ic_pirate_wallet_logo"
+        android:src="@drawable/icon_skull_drawable"
         ></ImageView>
 
     <ImageView

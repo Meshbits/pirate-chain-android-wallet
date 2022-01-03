@@ -90,6 +90,11 @@
 
     <!-- Pirate wallet colors -->
     <color name="pirate_wallet_bg">#212426</color>
+    <color name="pirate_wallet_grey_text">#6B6E76</color>
+    <color name="pirate_wallet_seperator">#131415</color>
+    <color name="pirate_wallet_text_color">#847C73</color>
+    <color name="pirate_wallet_dark_color">#11141B</color>
+    <color name="pirate_wallet_light_bg">#151619</color>
 
 
 </resources>

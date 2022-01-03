@@ -67,6 +67,17 @@
     <string name="translated_button_back">Go Back</string>
     <string name="translated_screen_wallethistory">Your Wallet History</string>
 
+
+    <!--             -->
+    <!-- ARRR WALLET -->
+    <!--             -->
+    <!--     We need to keep a copy of all of these in different translation files        -->
+
+
+    <string name="restore_from_str">Restore from</string>
+    <string name="recovery_phrase_str">Recovery Phrase</string>
+    <string name="create_new_wallet_str">Create New Wallet</string>
+
 </resources>
 
 <!-- ISSUES:

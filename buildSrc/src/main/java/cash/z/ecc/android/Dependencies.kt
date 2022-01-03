@@ -46,6 +46,10 @@ object Deps {
             val ROOM_COMPILER =             "androidx.room:room-compiler:$version"
             val ROOM_KTX =                  "androidx.room:room-ktx:$version"
         }
+
+        object Neumorphism :           Version("0.3.0") {
+            val COMPILER =             "com.github.fornewid:neumorphism:$version"
+        }
     }
     object Dagger :             Version("2.25.2") {
         val ANDROID_SUPPORT =               "com.google.dagger:dagger-android-support:$version"
