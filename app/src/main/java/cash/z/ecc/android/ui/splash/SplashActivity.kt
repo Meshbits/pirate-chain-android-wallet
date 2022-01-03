@@ -10,15 +10,20 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cash.z.ecc.android.R
+import cash.z.ecc.android.ext.Const
+import cash.z.ecc.android.preference.SharedPreferenceFactory
+import cash.z.ecc.android.ui.MainActivity
 import cash.z.ecc.android.ui.newwallet.LoginActivity
 
 class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         Handler(Looper.getMainLooper()).postDelayed(
             object : Runnable {
                 override fun run() {
-                    openMainActivity()
+                    openRespectiveScreen()
                 }
             },
             1000
@@ -26,9 +31,30 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
         addBottomAndTopNavBarColors()
     }
 
-    fun openMainActivity() {
+    fun openRespectiveScreen() {
+
+//        val prefs = SharedPreferenceFactory.getSharedPreferences(
+//            this
+//        )
+//
+//        if (prefs.getBoolean(Const.Pref.FIRST_USE_VIEW_TX, false)) {
+//            openLoginActivity()
+//        } else {
+            openMainActivity()
+//        }
+    }
+
+    fun openLoginActivity() {
         Intent(this, LoginActivity::class.java).apply {
             startActivity(this)
+            finish()
+        }
+    }
+
+    fun openMainActivity() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+            finish()
         }
     }
 
