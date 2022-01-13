@@ -298,5 +298,8 @@
     <string name="restore_from">@string/restore_from_str</string>
     <string name="recovery_phrase">@string/recovery_phrase_str</string>
     <string name="create_new_wallet">@string/create_new_wallet_str</string>
+    <string name="restore_phrase">@string/restore_phrase_str</string>
+    <string name="enter_seed_phrase">@string/enter_seed_phrase_str</string>
+    <string name="nobody_watching">@string/nobody_watching_str</string>
 
 </resources>

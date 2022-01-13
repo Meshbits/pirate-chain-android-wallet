@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import cash.z.ecc.android.feedback.Report
 import cash.z.ecc.android.ui.MainActivity
+import cash.z.ecc.android.ui.restore.RestoreActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,6 +28,12 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
     // explicitly casting to Analytics rather than MainActivity.
     val mainActivity: MainActivity? get() = if (activity is MainActivity) {
         activity as MainActivity
+    } else {
+        null
+    }
+
+    val restoreActivity: RestoreActivity? get() = if (activity is RestoreActivity) {
+        activity as RestoreActivity
     } else {
         null
     }

@@ -27,6 +27,9 @@
         <activity android:name=".ui.newwallet.LoginActivity" android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".ui.restore.RestoreActivity" android:screenOrientation="portrait">
+        </activity>
+
 
 
         <provider

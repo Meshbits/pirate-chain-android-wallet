@@ -77,6 +77,9 @@
     <string name="restore_from_str">Restore from</string>
     <string name="recovery_phrase_str">Recovery Phrase</string>
     <string name="create_new_wallet_str">Create New Wallet</string>
+    <string name="restore_phrase_str">Restore Phrase</string>
+    <string name="enter_seed_phrase_str">Enter Your Seed Phrase</string>
+    <string name="nobody_watching_str">Make sure nobody is watching you!</string>
 
 </resources>
 

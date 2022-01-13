@@ -73,7 +73,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     }
 
     private fun onClearSeedWords() {
-        mainActivity?.showConfirmation(
+        restoreActivity?.showConfirmation(
             "Clear All Words",
             "Are you sure you would like to clear all the seed words and type them again?",
             "Clear",
@@ -115,7 +115,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     private fun onExit() {
         mainActivity?.reportFunnel(Restore.Exit)
         hideAutoCompleteWords()
-        mainActivity?.hideKeyboard()
+        restoreActivity?.hideKeyboard()
         mainActivity?.navController?.popBackStack()
     }
 
@@ -126,7 +126,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
 
     private fun onDone() {
         mainActivity?.reportFunnel(Restore.Done)
-        mainActivity?.hideKeyboard()
+        restoreActivity?.hideKeyboard()
         val activation = ZcashWalletApp.instance.defaultNetwork.saplingActivationHeight
         val seedPhrase = binding.chipsInput.selectedChips.joinToString(" ") {
             it.title
@@ -140,13 +140,13 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
             walletSetup.validatePhrase(seedPhrase)
             importWallet(seedPhrase, birthday)
         } catch (t: Throwable) {
-            mainActivity?.showInvalidSeedPhraseError(t)
+            restoreActivity?.showInvalidSeedPhraseError(t)
         }
     }
 
     private fun importWallet(seedPhrase: String, birthday: Int) {
         mainActivity?.reportFunnel(Restore.ImportStarted)
-        mainActivity?.hideKeyboard()
+        restoreActivity?.hideKeyboard()
         mainActivity?.apply {
             lifecycleScope.launch {
                 try {
@@ -188,7 +188,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
             {
                 val isDone = (seedWordAdapter?.itemCount ?: 0) > 24
                 val focusedView = if (isDone) binding.inputBirthdate else seedWordAdapter!!.editText
-                mainActivity!!.showKeyboard(focusedView)
+                restoreActivity!!.showKeyboard(focusedView)
                 focusedView.requestFocus()
             },
             500L

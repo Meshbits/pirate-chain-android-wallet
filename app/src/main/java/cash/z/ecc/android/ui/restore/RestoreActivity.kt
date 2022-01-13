@@ -1,61 +1,20 @@
-package cash.z.ecc.android.ui.splash
+package cash.z.ecc.android.ui.restore
 
-import android.content.Intent
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cash.z.ecc.android.R
-import cash.z.ecc.android.ext.Const
-import cash.z.ecc.android.preference.SharedPreferenceFactory
-import cash.z.ecc.android.ui.MainActivity
-import cash.z.ecc.android.ui.newwallet.LoginActivity
 
-class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
-
+class RestoreActivity : AppCompatActivity(R.layout.restore_activity) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Handler(Looper.getMainLooper()).postDelayed(
-            object : Runnable {
-                override fun run() {
-                    openRespectiveScreen()
-                }
-            },
-            1000
-        )
         addBottomAndTopNavBarColors()
-    }
-
-    fun openRespectiveScreen() {
-
-        val prefs = SharedPreferenceFactory.getSharedPreferences(
-            this
-        )
-
-        if (prefs.getBoolean(Const.Pref.FIRST_USE_VIEW_TX, false)) {
-            openLoginActivity()
-        } else {
-            openMainActivity()
-        }
-    }
-
-    fun openLoginActivity() {
-        Intent(this, LoginActivity::class.java).apply {
-            startActivity(this)
-            finish()
-        }
-    }
-
-    fun openMainActivity() {
-        Intent(this, MainActivity::class.java).apply {
-            startActivity(this)
-            finish()
-        }
     }
 
     private fun addBottomAndTopNavBarColors() {
@@ -76,5 +35,16 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
                 window.setNavigationBarColor(resources.getColor(R.color.pirate_wallet_bg))
             }
         }
+    }
+
+    fun showKeyboard(focusedView: View) {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(focusedView, InputMethodManager.SHOW_FORCED)
+    }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(findViewById<View>(android.R.id.content).windowToken, 0)
     }
 }

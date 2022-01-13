@@ -62,6 +62,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
+                android:id="@+id/rvRestore"
                 android:background="@drawable/icon_gray_background"
                 android:layout_height="wrap_content">
                 <TextView

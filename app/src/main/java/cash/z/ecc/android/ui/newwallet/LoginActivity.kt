@@ -1,5 +1,6 @@
 package cash.z.ecc.android.ui.newwallet
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Window
@@ -7,11 +8,22 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cash.z.ecc.android.R
+import cash.z.ecc.android.databinding.LoginActivityBinding
+import cash.z.ecc.android.ui.restore.RestoreActivity
 
 class LoginActivity : AppCompatActivity(R.layout.login_activity) {
+
+    lateinit var loginActivityBinding: LoginActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loginActivityBinding = LoginActivityBinding.inflate(layoutInflater)
+        setContentView(loginActivityBinding.root)
         addBottomAndTopNavBarColors()
+
+        loginActivityBinding.rvRestore.setOnClickListener {
+            openRestoreActivity()
+        }
     }
 
     private fun addBottomAndTopNavBarColors() {
@@ -31,6 +43,12 @@ class LoginActivity : AppCompatActivity(R.layout.login_activity) {
                 window.setStatusBarColor(resources.getColor(R.color.pirate_wallet_bg))
                 window.setNavigationBarColor(resources.getColor(R.color.pirate_wallet_bg))
             }
+        }
+    }
+
+    fun openRestoreActivity() {
+        Intent(this, RestoreActivity::class.java).apply {
+            startActivity(this)
         }
     }
 }
