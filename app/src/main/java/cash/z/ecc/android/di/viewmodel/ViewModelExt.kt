@@ -32,8 +32,25 @@ inline fun <reified VM : ViewModel> BaseFragment<*>.activityViewModel(isSynchron
         }
 }
 
+inline fun <reified VM : ViewModel> BaseFragment<*>.activityRestoreViewModel(isSynchronizerScope: Boolean = true) = object : Lazy<VM> {
+    val cached: VM? = null
+    override fun isInitialized(): Boolean = cached != null
+    override val value: VM
+        get() {
+            return cached
+                ?: scopedFactoryRestore<VM>(isSynchronizerScope)?.let { factory ->
+                    ViewModelProvider(this@activityRestoreViewModel.restoreActivity!!, factory)[VM::class.java]
+                }
+        }
+}
+
 inline fun <reified VM : ViewModel> BaseFragment<*>.scopedFactory(isSynchronizerScope: Boolean = true): ViewModelProvider.Factory {
     val factory = if (isSynchronizerScope) mainActivity?.synchronizerComponent?.viewModelFactory() else mainActivity?.component?.viewModelFactory()
+    return factory ?: throw IllegalStateException("Error: mainActivity should not be null by the time the ${VM::class.java.simpleName} viewmodel is lazily accessed!")
+}
+
+inline fun <reified VM : ViewModel> BaseFragment<*>.scopedFactoryRestore(isSynchronizerScope: Boolean = true): ViewModelProvider.Factory {
+    val factory = if (isSynchronizerScope) restoreActivity?.synchronizerComponent?.viewModelFactory() else restoreActivity?.component?.viewModelFactoryRestore()
     return factory ?: throw IllegalStateException("Error: mainActivity should not be null by the time the ${VM::class.java.simpleName} viewmodel is lazily accessed!")
 }
 

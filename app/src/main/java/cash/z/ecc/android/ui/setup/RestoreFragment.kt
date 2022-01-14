@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.InputType
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -15,7 +14,7 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import cash.z.ecc.android.R
 import cash.z.ecc.android.databinding.FragmentRestoreBinding
-import cash.z.ecc.android.di.viewmodel.activityViewModel
+import cash.z.ecc.android.di.viewmodel.activityRestoreViewModel
 import cash.z.ecc.android.ext.Const
 import cash.z.ecc.android.ext.showInvalidSeedPhraseError
 import cash.z.ecc.android.ext.showSharedLibraryCriticalError
@@ -30,7 +29,7 @@ import kotlinx.coroutines.launch
 class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListener {
     override val screen = Report.Screen.RESTORE
 
-    private val walletSetup: WalletSetupViewModel by activityViewModel(false)
+    private val walletSetup: WalletSetupViewModel by activityRestoreViewModel(false)
 
     override fun inflate(inflater: LayoutInflater): FragmentRestoreBinding =
         FragmentRestoreBinding.inflate(inflater)
@@ -77,15 +76,13 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
                 } else {
                     birthdateString.toInt()
                 }
-            }
+            }.coerceAtLeast(Const.ARRRConstants.DEFAULT_BIRTHDAY_HEIGHT)
 
         try {
-            if (walletSetup != null) {
-                walletSetup.validatePhrase(seedPhrase)
-                importWallet(seedPhrase, birthday)
-            } else {
-                Log.e("ERROR in Wallet setup", "Error in wallet setup")
-            }
+            walletSetup.validatePhrase(seedPhrase)
+
+            // TODO: Open Main Activity and initiate import wallet flow
+            importWallet(seedPhrase, birthday)
         } catch (t: Throwable) {
             restoreActivity?.showInvalidSeedPhraseError(t)
         }

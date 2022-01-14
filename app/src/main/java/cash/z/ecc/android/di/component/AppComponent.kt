@@ -13,6 +13,7 @@ interface AppComponent {
 
     // Subcomponents
     fun mainActivitySubcomponent(): MainActivitySubcomponent.Factory
+    fun restoreActivitySubcomponent(): RestoreActivitySubcomponent.Factory
     fun synchronizerSubcomponent(): SynchronizerSubcomponent.Factory
     fun initializerSubcomponent(): InitializerSubcomponent.Factory
 

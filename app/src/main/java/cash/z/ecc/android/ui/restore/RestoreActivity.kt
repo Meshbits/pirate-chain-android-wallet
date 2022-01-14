@@ -10,13 +10,38 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cash.z.ecc.android.R
+import cash.z.ecc.android.ZcashWalletApp
+import cash.z.ecc.android.di.component.RestoreActivitySubcomponent
+import cash.z.ecc.android.di.component.SynchronizerSubcomponent
 import cash.z.ecc.android.ui.setup.RestoreFragment
 
 class RestoreActivity : AppCompatActivity(R.layout.restore_activity) {
+
+    lateinit var component: RestoreActivitySubcomponent
+    lateinit var synchronizerComponent: SynchronizerSubcomponent
+
+    val isInitialized get() = ::synchronizerComponent.isInitialized
+
+    val latestHeight: Int? get() = if (isInitialized) {
+        synchronizerComponent.synchronizer().latestHeight
+    } else {
+        null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component = ZcashWalletApp.component.restoreActivitySubcomponent().create(this).also {
+            it.inject(this)
+        }
         addBottomAndTopNavBarColors()
         addRestoreFragment()
+    }
+
+    suspend fun isValidAddress(address: String): Boolean {
+        try {
+            return !synchronizerComponent.synchronizer().validateAddress(address).isNotValid
+        } catch (t: Throwable) { }
+        return false
     }
 
     private fun addBottomAndTopNavBarColors() {
