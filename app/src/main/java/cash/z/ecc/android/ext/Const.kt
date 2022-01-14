@@ -24,6 +24,10 @@ object Const {
         const val SERVER_PORT = "const.pref.server_port"
     }
 
+    object ARRRConstants {
+        const val DEFAULT_BIRTHDAY_HEIGHT = 1390000
+    }
+
     /**
      * Constants used for wallet backup.
      */

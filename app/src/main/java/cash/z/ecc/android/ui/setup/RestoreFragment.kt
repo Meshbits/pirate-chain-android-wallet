@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.InputType
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -12,26 +13,18 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import cash.z.ecc.android.R
-import cash.z.ecc.android.ZcashWalletApp
 import cash.z.ecc.android.databinding.FragmentRestoreBinding
 import cash.z.ecc.android.di.viewmodel.activityViewModel
-import cash.z.ecc.android.ext.goneIf
-import cash.z.ecc.android.ext.showConfirmation
+import cash.z.ecc.android.ext.Const
 import cash.z.ecc.android.ext.showInvalidSeedPhraseError
 import cash.z.ecc.android.ext.showSharedLibraryCriticalError
 import cash.z.ecc.android.feedback.Report
 import cash.z.ecc.android.feedback.Report.Funnel.Restore
-import cash.z.ecc.android.feedback.Report.Tap.RESTORE_BACK
-import cash.z.ecc.android.feedback.Report.Tap.RESTORE_CLEAR
 import cash.z.ecc.android.feedback.Report.Tap.RESTORE_DONE
 import cash.z.ecc.android.feedback.Report.Tap.RESTORE_SUCCESS
 import cash.z.ecc.android.ui.base.BaseFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tylersuehr.chips.Chip
-import com.tylersuehr.chips.ChipsAdapter
-import com.tylersuehr.chips.SeedWordAdapter
 import kotlinx.coroutines.launch
 
 class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListener {
@@ -39,25 +32,11 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
 
     private val walletSetup: WalletSetupViewModel by activityViewModel(false)
 
-    private lateinit var seedWordRecycler: RecyclerView
-    private var seedWordAdapter: SeedWordAdapter? = null
-
     override fun inflate(inflater: LayoutInflater): FragmentRestoreBinding =
         FragmentRestoreBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        seedWordRecycler = binding.chipsInput.findViewById<RecyclerView>(R.id.chips_recycler)
-        seedWordAdapter = SeedWordAdapter(seedWordRecycler.adapter as ChipsAdapter).onDataSetChanged {
-            onChipsModified()
-        }.also { onChipsModified() }
-        seedWordRecycler.adapter = seedWordAdapter
-
-        binding.chipsInput.apply {
-            setFilterableChipList(getChips())
-            setDelimiter("[ ;,]", true)
-        }
 
         binding.proceed.setOnClickListener {
             onDone().also { tapped(RESTORE_DONE) }
@@ -65,44 +44,6 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
 
         binding.buttonSuccess.setOnClickListener {
             onEnterWallet().also { tapped(RESTORE_SUCCESS) }
-        }
-
-        binding.buttonClear.setOnClickListener {
-            onClearSeedWords().also { tapped(RESTORE_CLEAR) }
-        }
-    }
-
-    private fun onClearSeedWords() {
-        restoreActivity?.showConfirmation(
-            "Clear All Words",
-            "Are you sure you would like to clear all the seed words and type them again?",
-            "Clear",
-            onPositive = {
-                binding.chipsInput.clearSelectedChips()
-            }
-        )
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mainActivity?.onFragmentBackPressed(this) {
-            tapped(RESTORE_BACK)
-            if (seedWordAdapter == null || seedWordAdapter?.itemCount == 1) {
-                onExit()
-            } else {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setMessage("Are you sure? For security, the words that you have entered will be cleared!")
-                    .setTitle("Abort?")
-                    .setPositiveButton("Stay") { dialog, _ ->
-                        mainActivity?.reportFunnel(Restore.Stay)
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton("Exit") { dialog, _ ->
-                        dialog.dismiss()
-                        onExit()
-                    }
-                    .show()
-            }
         }
     }
 
@@ -127,18 +68,24 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
     private fun onDone() {
         mainActivity?.reportFunnel(Restore.Done)
         restoreActivity?.hideKeyboard()
-        val activation = ZcashWalletApp.instance.defaultNetwork.saplingActivationHeight
-        val seedPhrase = binding.chipsInput.selectedChips.joinToString(" ") {
-            it.title
-        }
+        val seedPhrase = binding.inputSeedphrase.text.toString()
+
         var birthday = binding.root.findViewById<TextView>(R.id.input_birthdate).text.toString()
             .let { birthdateString ->
-                if (birthdateString.isNullOrEmpty()) activation else birthdateString.toInt()
-            }.coerceAtLeast(activation)
+                if (birthdateString.isNullOrEmpty()) {
+                    Const.ARRRConstants.DEFAULT_BIRTHDAY_HEIGHT
+                } else {
+                    birthdateString.toInt()
+                }
+            }
 
         try {
-            walletSetup.validatePhrase(seedPhrase)
-            importWallet(seedPhrase, birthday)
+            if (walletSetup != null) {
+                walletSetup.validatePhrase(seedPhrase)
+                importWallet(seedPhrase, birthday)
+            } else {
+                Log.e("ERROR in Wallet setup", "Error in wallet setup")
+            }
         } catch (t: Throwable) {
             restoreActivity?.showInvalidSeedPhraseError(t)
         }
@@ -168,26 +115,12 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         binding.buttonSuccess.isEnabled = false
     }
 
-    private fun onChipsModified() {
-        updateDoneViews()
-        forceShowKeyboard()
-    }
-
-    private fun updateDoneViews(): Boolean {
-        val count = seedWordAdapter?.itemCount ?: 0
-        reportWords(count - 1) // subtract 1 for the editText
-        val isDone = count > 24
-        binding.groupDone.goneIf(!isDone)
-        return !isDone
-    }
-
     // forcefully show the keyboard as a hack to fix odd behavior where the keyboard
     // sometimes closes randomly and inexplicably in between seed word entries
     private fun forceShowKeyboard() {
         requireView().postDelayed(
             {
-                val isDone = (seedWordAdapter?.itemCount ?: 0) > 24
-                val focusedView = if (isDone) binding.inputBirthdate else seedWordAdapter!!.editText
+                val focusedView = binding.inputSeedphrase
                 restoreActivity!!.showKeyboard(focusedView)
                 focusedView.requestFocus()
             },
@@ -195,32 +128,15 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         )
     }
 
-    private fun reportWords(count: Int) {
-        mainActivity?.run {
-//            reportFunnel(Restore.SeedWordCount(count))
-            if (count == 1) {
-                reportFunnel(Restore.SeedWordsStarted)
-            } else if (count == 24) {
-                reportFunnel(Restore.SeedWordsCompleted)
-            }
-        }
-    }
-
     private fun hideAutoCompleteWords() {
-        seedWordAdapter?.editText?.setText("")
-    }
-
-    private fun getChips(): List<Chip> {
-        return resources.getStringArray(R.array.word_list).map {
-            SeedWordChip(it)
-        }
+        binding.inputSeedphrase?.setText("")
     }
 
     private fun touchScreenForUser() {
-        seedWordAdapter?.editText?.apply {
+        binding.inputSeedphrase?.apply {
             postDelayed(
                 {
-                    seedWordAdapter?.editText?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    binding.inputSeedphrase?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                     dispatchTouchEvent(motionEvent(ACTION_DOWN))
                     dispatchTouchEvent(motionEvent(ACTION_UP))
                 },

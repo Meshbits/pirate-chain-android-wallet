@@ -19,7 +19,7 @@
         android:fontFamily="@font/barlowregular"
         android:text="@string/restore_phrase"
         android:textColor="@color/text_light"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,6 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:layout_marginTop="50dp"
-        android:paddingBottom="32dp"
         android:paddingStart="32dp"
         android:paddingTop="18dp"
         android:textSize="20sp"
@@ -41,42 +40,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_title" />
 
-    <com.tylersuehr.chips.ChipsInputLayout
-        android:id="@+id/chips_input"
-        android:layout_width="match_parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_layout_seed_phrase"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/zcashBlack_54"
-        android:hint="@string/nobody_watching_str"
-        android:overScrollMode="never"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:textColor="@color/text_light"
-        android:textColorHint="#757575"
-        app:hideKeyboardOnChipClick="false"
-        app:allowCustomChips="false"
-        app:chip_showDelete="false"
-        app:chip_showDetails="true"
-        app:chip_textColor="@color/zcashWhite"
+        android:layout_marginTop="16dp"
+        android:theme="@style/Zcash.Overlay.TextInputLayout"
+        app:helperText="@string/wallet_birthday_height_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_subtitle" />
+        app:layout_constraintTop_toBottomOf="@id/text_subtitle"
+        app:layout_constraintWidth_percent="0.84">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_seedphrase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:textColor="@color/text_light"
+            android:textColorHint="@color/text_light_dimmed" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <View
-        android:id="@+id/divider_top"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/text_light_dimmed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/chips_input" />
-
-    <View
-        android:id="@+id/divider_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/text_light_dimmed"
-        app:layout_constraintBottom_toBottomOf="@id/chips_input"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <com.tylersuehr.chips.ChipsInputLayout-->
+<!--        android:id="@+id/chips_input"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/zcashBlack_54"-->
+<!--        android:hint="@string/nobody_watching_str"-->
+<!--        android:overScrollMode="never"-->
+<!--        android:layout_marginLeft="32dp"-->
+<!--        android:layout_marginRight="32dp"-->
+<!--        android:textColor="@color/text_light"-->
+<!--        android:textColorHint="#757575"-->
+<!--        app:hideKeyboardOnChipClick="false"-->
+<!--        app:allowCustomChips="false"-->
+<!--        app:chip_showDelete="false"-->
+<!--        app:chip_showDetails="true"-->
+<!--        app:chip_textColor="@color/zcashWhite"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/text_subtitle" />-->
 
     <TextView
         android:id="@+id/text_wallet_birthday_height"
@@ -91,7 +95,7 @@
         android:textColor="@color/zcashWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
+        app:layout_constraintTop_toBottomOf="@id/text_layout_seed_phrase" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_birthdate"
@@ -153,22 +157,6 @@
 
         </TextView>
     </RelativeLayout>
-
-
-
-    <TextView
-        android:id="@+id/button_clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:text="clear"
-        android:textAllCaps="true"
-        android:layout_marginRight="32dp"
-        android:textColor="@color/text_light"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/divider_top"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_success"
@@ -241,6 +229,6 @@
         android:id="@+id/group_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="text_title, text_subtitle, chips_input, divider_bottom, divider_top" />
+        app:constraint_referenced_ids="text_title, text_subtitle, text_layout_seed_phrase" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
