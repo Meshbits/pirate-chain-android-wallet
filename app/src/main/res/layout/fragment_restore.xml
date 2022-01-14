@@ -13,14 +13,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:paddingStart="32dp"
         android:textAlignment="center"
         android:paddingTop="32dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/barlowregular"
         android:text="@string/restore_phrase"
         android:textColor="@color/text_light"
         android:textSize="18sp"
+        android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -78,18 +78,31 @@
         app:layout_constraintBottom_toBottomOf="@id/chips_input"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/text_wallet_birthday_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:layout_marginTop="10dp"
+        android:paddingStart="32dp"
+        android:paddingTop="18dp"
+        android:textSize="20sp"
+        android:text="@string/wallet_birthday_height"
+        android:textColor="@color/zcashWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_layout_birthdate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Enter wallet birthday height (recommended)"
         android:theme="@style/Zcash.Overlay.TextInputLayout"
-        app:helperText="e.g. 419,200. This determines where to start scanning for transactions. Leave it blank to scan from the beginning, which takes a while."
+        app:helperText="@string/wallet_birthday_height_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider_bottom"
+        app:layout_constraintTop_toBottomOf="@id/text_wallet_birthday_height"
         app:layout_constraintWidth_percent="0.84">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -104,17 +117,44 @@
             android:textColorHint="@color/text_light_dimmed" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_done"
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/button_done"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="Import"-->
+<!--        android:textColor="@color/text_dark"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/text_layout_birthdate" />-->
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Import"
-        android:textColor="@color/text_dark"
+        android:layout_marginTop="80dp"
+        android:id="@+id/proceed"
+        android:foregroundGravity="center_horizontal"
+        android:background="@drawable/icon_blue_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_layout_birthdate" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_layout_birthdate"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/proceed"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/pirate_wallet_dark_color"
+            android:fontFamily="@font/barlowregular"
+            >
+
+        </TextView>
+    </RelativeLayout>
+
+
 
     <TextView
         android:id="@+id/button_clear"
@@ -195,7 +235,7 @@
         android:id="@+id/group_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="button_done, text_layout_birthdate" />
+        app:constraint_referenced_ids="proceed, text_layout_birthdate" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_start"

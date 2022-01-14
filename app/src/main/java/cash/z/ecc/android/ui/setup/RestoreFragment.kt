@@ -59,7 +59,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
             setDelimiter("[ ;,]", true)
         }
 
-        binding.buttonDone.setOnClickListener {
+        binding.proceed.setOnClickListener {
             onDone().also { tapped(RESTORE_DONE) }
         }
 

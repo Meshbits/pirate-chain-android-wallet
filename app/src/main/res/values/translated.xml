@@ -80,6 +80,9 @@
     <string name="restore_phrase_str">Restore Phrase</string>
     <string name="enter_seed_phrase_str">Enter Your Seed Phrase</string>
     <string name="nobody_watching_str">Make sure nobody is watching you!</string>
+    <string name="wallet_birthday_height_str">Wallet Birthday Height</string>
+    <string name="proceed_str">Proceed</string>
+    <string name="wallet_birthday_height_default_str">If you don\'t know, leave it blank. First sync will take longer with default birthday height to be 1390000.</string>
 
 </resources>
 

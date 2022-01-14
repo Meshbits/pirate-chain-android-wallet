@@ -301,5 +301,8 @@
     <string name="restore_phrase">@string/restore_phrase_str</string>
     <string name="enter_seed_phrase">@string/enter_seed_phrase_str</string>
     <string name="nobody_watching">@string/nobody_watching_str</string>
+    <string name="wallet_birthday_height">@string/wallet_birthday_height_str</string>
+    <string name="wallet_birthday_height_default">@string/wallet_birthday_height_default_str</string>
+    <string name="proceed">@string/proceed_str</string>
 
 </resources>

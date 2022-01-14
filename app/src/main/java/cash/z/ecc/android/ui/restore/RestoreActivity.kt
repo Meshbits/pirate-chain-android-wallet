@@ -10,11 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import cash.z.ecc.android.R
+import cash.z.ecc.android.ui.setup.RestoreFragment
 
 class RestoreActivity : AppCompatActivity(R.layout.restore_activity) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addBottomAndTopNavBarColors()
+        addRestoreFragment()
     }
 
     private fun addBottomAndTopNavBarColors() {
@@ -46,5 +48,17 @@ class RestoreActivity : AppCompatActivity(R.layout.restore_activity) {
     fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(findViewById<View>(android.R.id.content).windowToken, 0)
+    }
+
+    fun addRestoreFragment() {
+        val restoreFragment: RestoreFragment = RestoreFragment()
+
+        val fragmentManager = supportFragmentManager
+
+        val transaction = fragmentManager.beginTransaction()
+
+        transaction.add(R.id.frameLayout, restoreFragment)
+
+        transaction.commitAllowingStateLoss()
     }
 }
