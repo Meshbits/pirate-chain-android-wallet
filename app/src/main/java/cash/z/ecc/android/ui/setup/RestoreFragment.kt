@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.InputType
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_DOWN
@@ -23,11 +22,14 @@ import cash.z.ecc.android.feedback.Report.Funnel.Restore
 import cash.z.ecc.android.feedback.Report.Tap.RESTORE_DONE
 import cash.z.ecc.android.feedback.Report.Tap.RESTORE_SUCCESS
 import cash.z.ecc.android.ui.base.BaseFragment
+import cash.z.ecc.android.ui.restore.SeedViewModel
 import com.tylersuehr.chips.Chip
 import kotlinx.coroutines.launch
 
-class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListener {
+class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
     override val screen = Report.Screen.RESTORE
+
+    private var seedViewModel: SeedViewModel = SeedViewModel()
 
     private val walletSetup: WalletSetupViewModel by activityRestoreViewModel(false)
 
@@ -44,6 +46,8 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
         binding.buttonSuccess.setOnClickListener {
             onEnterWallet().also { tapped(RESTORE_SUCCESS) }
         }
+        binding.viewModel = seedViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onResume() {
@@ -144,10 +148,6 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>(), View.OnKeyListen
 
     private fun motionEvent(action: Int) = SystemClock.uptimeMillis().let { now ->
         MotionEvent.obtain(now, now, action, 0f, 0f, 0)
-    }
-
-    override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
-        return false
     }
 }
 

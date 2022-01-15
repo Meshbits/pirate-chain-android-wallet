@@ -1,236 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/pirate_wallet_bg"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textAlignment="center"
-        android:paddingTop="32dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/barlowregular"
-        android:text="@string/restore_phrase"
-        android:textColor="@color/text_light"
-        android:textSize="16sp"
-        android:foregroundGravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="cash.z.ecc.android.ui.restore.SeedViewModel"
+            />
 
-    <TextView
-        android:id="@+id/text_subtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:layout_marginTop="30dp"
-        android:paddingStart="32dp"
-        android:paddingTop="18dp"
-        android:textSize="20sp"
-        android:text="@string/enter_seed_phrase"
-        android:textColor="@color/zcashWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_title" />
+        <import type="android.text.TextUtils" />
+    </data>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_seed_phrase"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:theme="@style/Zcash.Overlay.TextInputLayout"
-        app:helperText="@string/nobody_watching"
-        app:helperTextTextAppearance="@style/ARRR.TextAppearance.ARRR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_subtitle"
-        app:layout_constraintWidth_percent="0.84">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_seedphrase"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:textColor="@color/text_light"
-            android:textColorHint="@color/text_light_dimmed" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/pirate_wallet_bg"
+        >
 
-    <!--    <com.tylersuehr.chips.ChipsInputLayout-->
-<!--        android:id="@+id/chips_input"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/zcashBlack_54"-->
-<!--        android:hint="@string/nobody_watching_str"-->
-<!--        android:overScrollMode="never"-->
-<!--        android:layout_marginLeft="32dp"-->
-<!--        android:layout_marginRight="32dp"-->
-<!--        android:textColor="@color/text_light"-->
-<!--        android:textColorHint="#757575"-->
-<!--        app:hideKeyboardOnChipClick="false"-->
-<!--        app:allowCustomChips="false"-->
-<!--        app:chip_showDelete="false"-->
-<!--        app:chip_showDetails="true"-->
-<!--        app:chip_textColor="@color/zcashWhite"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/text_subtitle" />-->
-
-    <TextView
-        android:id="@+id/text_wallet_birthday_height"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:layout_marginTop="10dp"
-        android:paddingStart="32dp"
-        android:paddingTop="18dp"
-        android:textSize="20sp"
-        android:text="@string/wallet_birthday_height"
-        android:textColor="@color/zcashWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_layout_seed_phrase" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_layout_birthdate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:theme="@style/Zcash.Overlay.TextInputLayout"
-        app:helperText="@string/wallet_birthday_height_default"
-        app:helperTextTextAppearance="@style/ARRR.TextAppearance.ARRR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_wallet_birthday_height"
-        app:layout_constraintWidth_percent="0.84">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_birthdate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="8"
-            android:singleLine="true"
-            android:textColor="@color/text_light"
-            android:textColorHint="@color/text_light_dimmed" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/button_done"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="32dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="Import"-->
-<!--        android:textColor="@color/text_dark"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/text_layout_birthdate" />-->
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_marginTop="80dp"
-        android:id="@+id/proceed"
-        android:foregroundGravity="center_horizontal"
-        android:background="@drawable/icon_blue_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAlignment="center"
+            android:paddingTop="32dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/barlowregular"
+            android:text="@string/restore_phrase"
+            android:textColor="@color/text_light"
+            android:textSize="16sp"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginTop="30dp"
+            android:paddingStart="32dp"
+            android:paddingTop="18dp"
+            android:textSize="20sp"
+            android:text="@string/enter_seed_phrase"
+            android:textColor="@color/zcashWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_title" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_seed_phrase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:theme="@style/Zcash.Overlay.TextInputLayout"
+            app:helperText="@string/nobody_watching"
+            app:helperTextTextAppearance="@style/ARRR.TextAppearance.ARRR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_subtitle"
+            app:layout_constraintWidth_percent="0.84">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_seedphrase"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="@={viewModel._userInput}"
+                android:textColor="@color/text_light"
+                android:textColorHint="@color/text_light_dimmed" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--    <com.tylersuehr.chips.ChipsInputLayout-->
+        <!--        android:id="@+id/chips_input"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:background="@color/zcashBlack_54"-->
+        <!--        android:hint="@string/nobody_watching_str"-->
+        <!--        android:overScrollMode="never"-->
+        <!--        android:layout_marginLeft="32dp"-->
+        <!--        android:layout_marginRight="32dp"-->
+        <!--        android:textColor="@color/text_light"-->
+        <!--        android:textColorHint="#757575"-->
+        <!--        app:hideKeyboardOnChipClick="false"-->
+        <!--        app:allowCustomChips="false"-->
+        <!--        app:chip_showDelete="false"-->
+        <!--        app:chip_showDetails="true"-->
+        <!--        app:chip_textColor="@color/zcashWhite"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toBottomOf="@id/text_subtitle" />-->
+
+        <TextView
+            android:id="@+id/text_wallet_birthday_height"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginTop="10dp"
+            android:paddingStart="32dp"
+            android:paddingTop="18dp"
+            android:textSize="20sp"
+            android:text="@string/wallet_birthday_height"
+            android:textColor="@color/zcashWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_layout_seed_phrase" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout_birthdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:theme="@style/Zcash.Overlay.TextInputLayout"
+            app:helperText="@string/wallet_birthday_height_default"
+            app:helperTextTextAppearance="@style/ARRR.TextAppearance.ARRR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_wallet_birthday_height"
+            app:layout_constraintWidth_percent="0.84">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_birthdate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="8"
+                android:singleLine="true"
+                android:textColor="@color/text_light"
+                android:textColorHint="@color/text_light_dimmed" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--    <com.google.android.material.button.MaterialButton-->
+        <!--        android:id="@+id/button_done"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_marginEnd="32dp"-->
+        <!--        android:layout_marginStart="16dp"-->
+        <!--        android:layout_marginTop="16dp"-->
+        <!--        android:text="Import"-->
+        <!--        android:textColor="@color/text_dark"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintTop_toBottomOf="@id/text_layout_birthdate" />-->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="80dp"
+            android:foregroundGravity="center_horizontal"
+            android:background="@drawable/icon_blue_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:alpha="@{!TextUtils.isEmpty(viewModel._userInput) ? 1.0f : 0.2f}"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/proceed"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:id="@+id/proceed"
+                android:textAllCaps="false"
+                android:paddingBottom="5dp"
+                android:background="@color/zcashBlack_0"
+                android:textColor="@color/pirate_wallet_dark_color"
+                android:fontFamily="@font/barlowregular"
+                android:enabled="@{!TextUtils.isEmpty(viewModel._userInput)}"
+                >
+
+            </Button>
+        </RelativeLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_success"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/proceed"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:paddingBottom="5dp"
-            android:textColor="@color/pirate_wallet_dark_color"
-            android:fontFamily="@font/barlowregular"
-            >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.33333"
+            app:layout_constraintWidth_percent="0.4053398058"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/lottie_success" />
 
-        </TextView>
-    </RelativeLayout>
+        <!--    <ImageView-->
+        <!--        android:id="@+id/icon_success"-->
+        <!--        android:layout_width="0dp"-->
+        <!--        android:layout_height="0dp"-->
+        <!--        app:tint="#00FF00"-->
+        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--        app:layout_constraintDimensionRatio="W,1:1"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent"-->
+        <!--        app:layout_constraintVertical_bias="0.33333"-->
+        <!--        app:layout_constraintWidth_percent="0.4053398058"-->
+        <!--        app:srcCompat="@drawable/ic_check_shield" />-->
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="W,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33333"
-        app:layout_constraintWidth_percent="0.4053398058"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="false"
-        app:lottie_rawRes="@raw/lottie_success" />
+        <TextView
+            android:id="@+id/text_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:text="Success"
+            android:textColor="@color/text_light"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lottie_success" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/icon_success"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:tint="#00FF00"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintDimensionRatio="W,1:1"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.33333"-->
-<!--        app:layout_constraintWidth_percent="0.4053398058"-->
-<!--        app:srcCompat="@drawable/ic_check_shield" />-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="View Wallet"
+            android:textColor="@color/text_dark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_success"
+            />
 
-    <TextView
-        android:id="@+id/text_success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="12dp"
-        android:text="Success"
-        android:textColor="@color/text_light"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lottie_success" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="lottie_success, text_success, button_success" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="View Wallet"
-        android:textColor="@color/text_dark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_success"
-        />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="proceed, text_layout_birthdate" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="lottie_success, text_success, button_success" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="text_title, text_subtitle, text_layout_seed_phrase" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="proceed, text_layout_birthdate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="text_title, text_subtitle, text_layout_seed_phrase" />
+</layout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
