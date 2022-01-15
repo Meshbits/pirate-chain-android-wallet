@@ -100,7 +100,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:paddingStart="32dp"
             android:paddingTop="18dp"
             android:textSize="20sp"
@@ -110,30 +110,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_layout_seed_phrase" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_layout_birthdate"
+
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:theme="@style/Zcash.Overlay.TextInputLayout"
-            app:helperText="@string/wallet_birthday_height_default"
-            app:helperTextTextAppearance="@style/ARRR.TextAppearance.ARRR"
+            android:id="@+id/input_birthdate_linearlayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.84"
             app:layout_constraintTop_toBottomOf="@id/text_wallet_birthday_height"
-            app:layout_constraintWidth_percent="0.84">
+            >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_birthdate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:maxLength="8"
-                android:singleLine="true"
-                android:textColor="@color/text_light"
-                android:textColorHint="@color/text_light_dimmed" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_layout_birthdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/Zcash.Overlay.TextInputLayout"
+                app:helperText="@string/wallet_birthday_height_default"
+                app:helperTextTextAppearance="@style/ARRR.TextAppearance.ARRR"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_birthdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:layout_marginRight="40dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_light"
+                    android:textColorHint="@color/text_light_dimmed" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/dropDownBirthday"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icondown"
+                >
+
+            </ImageView>
+
+
+        </RelativeLayout>
+
 
         <!--    <com.google.android.material.button.MaterialButton-->
         <!--        android:id="@+id/button_done"-->

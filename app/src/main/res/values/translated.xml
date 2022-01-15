@@ -82,6 +82,8 @@
     <string name="nobody_watching_str">Make sure nobody is watching you!</string>
     <string name="wallet_birthday_height_str">Wallet Birthday Height</string>
     <string name="proceed_str">Proceed</string>
+    <string name="cancel_str">Cancel</string>
+    <string name="choose_a_birthday_str">Choose a birthday height for sync, leave it default if you are not sure.</string>
     <string name="wallet_birthday_height_default_str">If you don\'t know, leave it blank. First sync will take longer with default birthday height to be 1390000.</string>
 
 </resources>

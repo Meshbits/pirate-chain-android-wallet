@@ -1,5 +1,6 @@
 package cash.z.ecc.android.ui.setup
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
@@ -15,6 +16,7 @@ import cash.z.ecc.android.R
 import cash.z.ecc.android.databinding.FragmentRestoreBinding
 import cash.z.ecc.android.di.viewmodel.activityRestoreViewModel
 import cash.z.ecc.android.ext.Const
+import cash.z.ecc.android.ext.Const.ARRRConstants.anArrayOfBirthdays
 import cash.z.ecc.android.ext.showInvalidSeedPhraseError
 import cash.z.ecc.android.ext.showSharedLibraryCriticalError
 import cash.z.ecc.android.feedback.Report
@@ -23,12 +25,13 @@ import cash.z.ecc.android.feedback.Report.Tap.RESTORE_DONE
 import cash.z.ecc.android.feedback.Report.Tap.RESTORE_SUCCESS
 import cash.z.ecc.android.ui.base.BaseFragment
 import cash.z.ecc.android.ui.restore.SeedViewModel
+import com.khoiron.actionsheets.ActionSheet
+import com.khoiron.actionsheets.callback.ActionSheetCallBack
 import com.tylersuehr.chips.Chip
 import kotlinx.coroutines.launch
 
 class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
     override val screen = Report.Screen.RESTORE
-
     private var seedViewModel: SeedViewModel = SeedViewModel()
 
     private val walletSetup: WalletSetupViewModel by activityRestoreViewModel(false)
@@ -48,6 +51,27 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
         }
         binding.viewModel = seedViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.dropDownBirthday.setOnClickListener {
+            showBirthdayMenu()
+        }
+    }
+
+    private fun showBirthdayMenu() {
+
+        restoreActivity?.hideKeyboard()
+        context?.let {
+            ActionSheet(it, anArrayOfBirthdays)
+                .setTitle(getString(R.string.choose_a_birthday))
+                .setColorTitleCancel(Color.parseColor("#FF4081"))
+                .create(object : ActionSheetCallBack {
+                    override fun data(data: String, position: Int) {
+                        if (!data.equals(getString(R.string.cancel_text))) {
+                            binding.inputBirthdate.setText(data)
+                        }
+                    }
+                })
+        }
     }
 
     override fun onResume() {
@@ -69,6 +93,7 @@ class RestoreFragment : BaseFragment<FragmentRestoreBinding>() {
     }
 
     private fun onDone() {
+
         mainActivity?.reportFunnel(Restore.Done)
         restoreActivity?.hideKeyboard()
         val seedPhrase = binding.inputSeedphrase.text.toString()

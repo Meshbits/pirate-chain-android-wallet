@@ -50,6 +50,10 @@ object Deps {
         object Neumorphism :           Version("0.3.0") {
             val COMPILER =             "com.github.fornewid:neumorphism:$version"
         }
+
+        object AndroidActionSheet :           Version("4") {
+            val COMPILER =             "com.github.khoyron:Actionsheet-android:$version"
+        }
     }
     object Dagger :             Version("2.25.2") {
         val ANDROID_SUPPORT =               "com.google.dagger:dagger-android-support:$version"

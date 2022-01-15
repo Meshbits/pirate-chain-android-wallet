@@ -304,5 +304,7 @@
     <string name="wallet_birthday_height">@string/wallet_birthday_height_str</string>
     <string name="wallet_birthday_height_default">@string/wallet_birthday_height_default_str</string>
     <string name="proceed">@string/proceed_str</string>
+    <string name="cancel_text">@string/cancel_str</string>
+    <string name="choose_a_birthday">@string/choose_a_birthday_str</string>
 
 </resources>

@@ -156,6 +156,7 @@ dependencies {
     implementation Deps.AndroidX.Navigation.UI_KTX
     implementation Deps.AndroidX.Room.ROOM_KTX
     implementation Deps.AndroidX.Neumorphism.COMPILER
+    implementation Deps.AndroidX.AndroidActionSheet.COMPILER
     kapt Deps.AndroidX.Room.ROOM_COMPILER
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
