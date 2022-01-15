@@ -45,7 +45,7 @@
     </style>
 
     <style name="Zcash.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxBackgroundColor">@color/pirate_wallet_bg</item>
     </style>
 
     <!-- Text Appearances -->
