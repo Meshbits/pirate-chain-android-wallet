@@ -196,7 +196,7 @@
                 android:textSize="18sp"
                 android:id="@+id/proceed"
                 android:textAllCaps="false"
-                android:paddingBottom="5dp"
+                android:paddingBottom="10dp"
                 android:background="@color/zcashBlack_0"
                 android:textColor="@color/pirate_wallet_dark_color"
                 android:fontFamily="@font/barlowregular"
